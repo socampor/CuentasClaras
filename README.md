@@ -1,2 +1,2 @@
-# SoftOne
-SoftOne academic project
+# Cuentas claras
+SoftOne-Cuentas Claras academic project
