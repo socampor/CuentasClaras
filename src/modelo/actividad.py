@@ -1,6 +1,5 @@
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
-
 from .declarative_base import Base
 
 class Actividad (Base):

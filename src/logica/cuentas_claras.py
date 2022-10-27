@@ -12,7 +12,6 @@ class CuentasClaras():
     Base.metadata.create_all(engine)
     self.actividades = self.dar_actividades()
     self.viajeros = self.dar_viajeros()
-    
 
   def dar_actividad(self, nombreActividad):
     actividad = session.query(Actividad).filter_by(nombre = nombreActividad).first()
