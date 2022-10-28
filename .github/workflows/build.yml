@@ -27,9 +27,8 @@ jobs:
       - name: Cobertura
         id: coverage
         run: |
-          coverage run -m unittest discover tests
-          coverage report -m
-          coverage xml -i
+          python -m coverage run -m unittest discover tests
+          python -m coverage xml -i
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
