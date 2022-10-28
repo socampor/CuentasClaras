@@ -51,5 +51,6 @@ MANIFEST
 .venv*/
 .vscode/
 env/*
+venv/*
 
 aplicacion.sqlite
