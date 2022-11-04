@@ -6,8 +6,8 @@ include =
 
 # omit = bad_file.py
 omit =
-    src\logica\__init__.py
     src\logica\Logica_mock.py
+    src\logica\__init__.py
     src\modelo\*
     src\vista\*
 
