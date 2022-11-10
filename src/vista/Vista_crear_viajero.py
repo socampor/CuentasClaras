@@ -7,6 +7,19 @@ from functools import partial
 class Dialogo_crear_viajero(QDialog):
     #Diálogo para crear o editar un viajero
 
+    def create_btns(btn, text, distribuidor, fila, id, action ):
+        btn = QPushButton(text)
+        distribuidor.addWidget(btn, fila, id)
+        btn.clicked.connect(action)
+
+    def create_line_edit(text,entity, distribuidor, fila,):
+        text=QLineEdit(entity)
+        distribuidor.addWidget(text,fila,0,1,3)
+    
+    def create_label(etiqueta, text, distribuidor, fila):
+        etiqueta=QLabel(text)
+        distribuidor.addWidget(etiqueta,fila,0,1,3)      
+
     def __init__(self,viajero):
         """
         Constructor del diálogo
@@ -35,32 +48,23 @@ class Dialogo_crear_viajero(QDialog):
         self.setWindowTitle("CuentasClaras - {}".format(titulo))
        
         #Creación de las etiquetas y los campos de texto
-
-        etiqueta_id=QLabel("Identificación")
-        distribuidor_dialogo.addWidget(etiqueta_id,numero_fila,0,1,3)                
+        self.create_label(etiqueta_id, "Identificación", distribuidor_dialogo, numero_fila)           
         numero_fila=numero_fila+1
 
-        self.texto_id=QLineEdit(self)
-        distribuidor_dialogo.addWidget(self.texto_id,numero_fila,0,1,3)
+        self.create_line_edit(self.texto_id, self,distribuidor_dialogo,numero_fila)
         numero_fila=numero_fila+1
 
-        etiqueta_nombre=QLabel("Nombre")
-        distribuidor_dialogo.addWidget(etiqueta_nombre,numero_fila,0,1,3)                
+        self.create_label(etiqueta_nombre, "Nombre", distribuidor_dialogo, numero_fila)             
         numero_fila=numero_fila+1
         
-        self.texto_nombre=QLineEdit(self)
-        distribuidor_dialogo.addWidget(self.texto_nombre,numero_fila,0,1,3)
+        self.create_line_edit(self.texto_nombre, self,distribuidor_dialogo,numero_fila)
         numero_fila=numero_fila+1
 
         #Creación de los botones para guardar o cancelar
 
-        self.btn_guardar = QPushButton("Guardar")
-        distribuidor_dialogo.addWidget(self.btn_guardar ,numero_fila,1)
-        self.btn_guardar.clicked.connect(self.guardar)
+        self.create_btns(self.btn_guardar, "Guardar", distribuidor_dialogo, numero_fila, 1, self.guardar)
 
-        self.btn_cancelar = QPushButton("Cancelar")
-        distribuidor_dialogo.addWidget(self.btn_cancelar ,numero_fila,2)
-        self.btn_cancelar.clicked.connect(self.cancelar)
+        self.create_btns(self.btn_cancelar, "Cancelar", distribuidor_dialogo, numero_fila, 2, self.cancelar)
 
         #Si el diálogo se va a usar para editar, se pone la información correspondiente en los campos de texto
 
