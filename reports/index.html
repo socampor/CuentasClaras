@@ -2250,6 +2250,42 @@ Licensed under the MIT license.
         }
 
         function drawSeriesLines(series) {
+            function clipXMin(x1, x2, y1, y2, axisx) {
+                // clip with xmin
+                if (x1 <= x2 && x1 < axisx.min) {
+                        if (x2 < axisx.min)
+                            return false;
+                        y1 = (axisx.min - x1) / (x2 - x1) * (y2 - y1) + y1;
+                        x1 = axisx.min;
+                    }
+                    else if (x2 <= x1 && x2 < axisx.min) {
+                        if (x1 < axisx.min)
+                            return false;
+                        y2 = (axisx.min - x1) / (x2 - x1) * (y2 - y1) + y1;
+                        x2 = axisx.min;
+                    }
+
+                    return [x1, x2, y1, y2];
+            }
+
+            function clipXMax(x1, x2, y1, y2, axisx) {
+                    // clip with xmax
+                    if (x1 >= x2 && x1 > axisx.max) {
+                        if (x2 > axisx.max)
+                            return false;
+                        y1 = (axisx.max - x1) / (x2 - x1) * (y2 - y1) + y1;
+                        x1 = axisx.max;
+                    }
+                    else if (x2 >= x1 && x2 > axisx.max) {
+                        if (x1 > axisx.max)
+                            return false;
+                        y2 = (axisx.max - x1) / (x2 - x1) * (y2 - y1) + y1;
+                        x2 = axisx.max;
+                    }
+
+                    return [x1, x2, y1, y2];
+            }
+
             function plotLine(datapoints, xoffset, yoffset, axisx, axisy) {
                 var points = datapoints.points,
                     ps = datapoints.pointsize,
@@ -2293,32 +2329,16 @@ Licensed under the MIT license.
                     }
 
                     // clip with xmin
-                    if (x1 <= x2 && x1 < axisx.min) {
-                        if (x2 < axisx.min)
-                            continue;
-                        y1 = (axisx.min - x1) / (x2 - x1) * (y2 - y1) + y1;
-                        x1 = axisx.min;
-                    }
-                    else if (x2 <= x1 && x2 < axisx.min) {
-                        if (x1 < axisx.min)
-                            continue;
-                        y2 = (axisx.min - x1) / (x2 - x1) * (y2 - y1) + y1;
-                        x2 = axisx.min;
-                    }
+                    var resMin = clipXMin(x1, x2, y1, y2, axisx);
+                    if (!resMin)
+                        continue;
+                    x1 = res[0]; x2 = res[1]; y1 = res[2]; y2 = res[3];
 
                     // clip with xmax
-                    if (x1 >= x2 && x1 > axisx.max) {
-                        if (x2 > axisx.max)
-                            continue;
-                        y1 = (axisx.max - x1) / (x2 - x1) * (y2 - y1) + y1;
-                        x1 = axisx.max;
-                    }
-                    else if (x2 >= x1 && x2 > axisx.max) {
-                        if (x1 > axisx.max)
-                            continue;
-                        y2 = (axisx.max - x1) / (x2 - x1) * (y2 - y1) + y1;
-                        x2 = axisx.max;
-                    }
+                    var resMax = clipXMax(x1, x2, y1, y2, axisx);
+                    if (!resMax)
+                        continue;
+                    x1 = res[0]; x2 = res[1]; y1 = res[2]; y2 = res[3];
 
                     if (x1 != prevx || y1 != prevy)
                         ctx.moveTo(axisx.p2c(x1) + xoffset, axisy.p2c(y1) + yoffset);
@@ -2376,32 +2396,16 @@ Licensed under the MIT license.
                     // clip x values
 
                     // clip with xmin
-                    if (x1 <= x2 && x1 < axisx.min) {
-                        if (x2 < axisx.min)
-                            continue;
-                        y1 = (axisx.min - x1) / (x2 - x1) * (y2 - y1) + y1;
-                        x1 = axisx.min;
-                    }
-                    else if (x2 <= x1 && x2 < axisx.min) {
-                        if (x1 < axisx.min)
-                            continue;
-                        y2 = (axisx.min - x1) / (x2 - x1) * (y2 - y1) + y1;
-                        x2 = axisx.min;
-                    }
+                    var resMin = clipXMin(x1, x2, y1, y2, axisx);
+                    if (!resMin)
+                        continue;
+                    x1 = res[0]; x2 = res[1]; y1 = res[2]; y2 = res[3];
 
                     // clip with xmax
-                    if (x1 >= x2 && x1 > axisx.max) {
-                        if (x2 > axisx.max)
-                            continue;
-                        y1 = (axisx.max - x1) / (x2 - x1) * (y2 - y1) + y1;
-                        x1 = axisx.max;
-                    }
-                    else if (x2 >= x1 && x2 > axisx.max) {
-                        if (x1 > axisx.max)
-                            continue;
-                        y2 = (axisx.max - x1) / (x2 - x1) * (y2 - y1) + y1;
-                        x2 = axisx.max;
-                    }
+                    var resMax = clipXMax(x1, x2, y1, y2, axisx);
+                    if (!resMax)
+                        continue;
+                    x1 = res[0]; x2 = res[1]; y1 = res[2]; y2 = res[3];
 
                     if (!areaOpen) {
                         // open area
